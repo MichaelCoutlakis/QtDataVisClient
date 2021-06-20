@@ -12,6 +12,8 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_QtFigure.h"
 
+#include "qcustomplot.h"
+
 class QtFigure : public QMainWindow, public dvis::Backend, public dvis::Figure
 {
     Q_OBJECT
@@ -23,8 +25,8 @@ public:
     void SetFigure(const dvis::Figure& fig);
 
 
-    void RenderFigure(Figure* fig) override {};
-    void RenderXY_Plot(Figure* fig, dvis::XY_Plot* pXY_Plot) override {};
+    void RenderFigure(Figure* fig) override;
+    void RenderXY_Plot(Figure* fig, dvis::XY_Plot* xy_plot) override;
 
 
 private slots:
@@ -33,6 +35,8 @@ signals:
     void FigureClosed(QtFigure* figure);
 private:
     Ui::QtFigureClass ui;
+
+    QCPTextElement* m_title = nullptr;
 
     void closeEvent(QCloseEvent* event) override
     {
