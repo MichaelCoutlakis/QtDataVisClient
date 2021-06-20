@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>156</width>
+    <width>409</width>
     <height>249</height>
    </rect>
   </property>
@@ -14,7 +14,7 @@
    <string>QtDataVisClient</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="m_ip">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -40,7 +40,7 @@
      <string>IP</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="m_port">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -66,7 +66,7 @@
      <string>Port Number</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="m_connect">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -79,13 +79,26 @@
      <string>Connect</string>
     </property>
    </widget>
+   <widget class="QLabel" name="m_packet_count">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>100</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Packet Count: </string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>156</width>
+     <width>409</width>
      <height>22</height>
     </rect>
    </property>

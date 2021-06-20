@@ -8,8 +8,9 @@
 
 #include "qcustomplot.h"
 
-QtFigure::QtFigure(QWidget* parent)
-    : QMainWindow(parent)
+QtFigure::QtFigure(dvis::Figure figure, QWidget* parent)
+    : QMainWindow(parent),
+    dvis::Figure(figure)
 {
     ui.setupUi(this);
 
@@ -32,6 +33,17 @@ QtFigure::QtFigure(QWidget* parent)
     ui.m_plot->xAxis->setRange(-1, 1);
     ui.m_plot->yAxis->setRange(0, 1);
     ui.m_plot->replot();
+}
+
+
+
+void QtFigure::SetFigure(const dvis::Figure& fig)
+{
+    //*this = fig;
+    // Might need to think about how bad this may be
+    static_cast<dvis::Figure&>(*this) = fig;
+
+    Render(this);
 }
 
 

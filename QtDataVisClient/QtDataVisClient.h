@@ -5,13 +5,21 @@
 *******************************************************************************/
 #pragma once
 #include <vector>
+#include <memory>
+
+#include "../../NetDataVis/NetDataVis/NetBackendClient.h"
 
 #include <QPointer>
 #include <QtWidgets/QMainWindow>
 #include "ui_QtDataVisClient.h"
 
 
+
+
+
 class QtFigure;
+
+
 
 class QtDataVisClient : public QMainWindow
 {
@@ -23,7 +31,15 @@ private slots:
     void OnConnect();
     void OnFigureClosed(QObject* object);
 private:
+
+    void OnPacket(const dvis::pkt::NetPacketT& packet);
+
+
+    void OnFigure();
+
+
     Ui::QtDataVisClientClass ui;
+    std::shared_ptr<dvis::NetBackendClient> m_backend_client;
 
     std::vector<QPointer<QtFigure>> m_figures;
 };

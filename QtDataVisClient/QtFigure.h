@@ -5,15 +5,28 @@
 *******************************************************************************/
 #pragma once
 
+#include "../../CppDataVisLib/CppDataVisLib/Figure.h"
+#include "../../CppDataVisLib/CppDataVisLib/XY_Plot.h"
+
+
 #include <QtWidgets/QMainWindow>
 #include "ui_QtFigure.h"
 
-class QtFigure : public QMainWindow
+class QtFigure : public QMainWindow, public dvis::Backend, public dvis::Figure
 {
     Q_OBJECT
 
 public:
-    QtFigure(QWidget* parent = Q_NULLPTR);
+    QtFigure(dvis::Figure figure, QWidget* parent = Q_NULLPTR);
+    virtual ~QtFigure() {}
+
+    void SetFigure(const dvis::Figure& fig);
+
+
+    void RenderFigure(Figure* fig) override {};
+    void RenderXY_Plot(Figure* fig, dvis::XY_Plot* pXY_Plot) override {};
+
+
 private slots:
 
 signals:
