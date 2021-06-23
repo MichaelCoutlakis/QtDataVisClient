@@ -57,7 +57,7 @@ void QtDataVisClient::OnProcessPackets()
 	static int packet_count = 0;
 	ui.m_packet_count->setText(QString::fromStdString("Packet count: " + std::to_string(++packet_count)));
 
-	std::shared_ptr<dvis::Plot> plot;
+	std::shared_ptr<QtPlot> plot;
 
 	auto& packet = m_packets.front();
 
@@ -65,7 +65,7 @@ void QtDataVisClient::OnProcessPackets()
 	if(packet->m_figure->m_xy_plot)
 	{
 		auto& rhs = packet->m_figure->m_xy_plot;
-		plot = std::make_shared<dvis::XY_Plot>(
+		plot = std::make_shared<QtXY_Plot>(
 			rhs->m_series[0]->m_x,
 			rhs->m_series[0]->m_y,
 			rhs->m_x_label,
@@ -75,7 +75,7 @@ void QtDataVisClient::OnProcessPackets()
 	dvis::Figure fig
 	(
 		packet->m_figure->m_title,
-		plot,
+		nullptr,
 		packet->m_figure->m_ID
 	);
 
@@ -90,10 +90,18 @@ void QtDataVisClient::OnProcessPackets()
 	if(figure_window != m_figures.end())
 	{
 		(*figure_window)->SetFigure(fig);
+		(*figure_window)->m_plot = plot;
 	}
 	else
 	{
 		m_figures.push_back(QPointer<QtFigure>(new QtFigure(fig)));
+		if(plot)
+		{
+			//std::shared_ptr<QtXY_Plot> xy_plot = std::make_shared<QtXY_Plot>();
+			//xy_plot->SetXY_Plot(*(static_cast<dvis::XY_Plot*>(plot.get())));
+			//m_figures.back()->SetPlot(plot);
+			m_figures.back()->m_plot = plot;
+		}
 		m_figures.back()->connect(m_figures.back(), &QtFigure::FigureClosed, this, &QtDataVisClient::OnFigureClosed);
 		m_figures.back()->show();
 	}

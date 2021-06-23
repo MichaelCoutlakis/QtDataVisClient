@@ -41,49 +41,55 @@ void QtFigure::SetFigure(const dvis::Figure& fig)
 	// Might need to think about how bad this may be
 	static_cast<dvis::Figure&>(*this) = fig;
 
-	Render(this);
+	//Render(this);
+	Draw();
+
+	if(m_plot)
+		m_plot->Draw(ui.m_plot);
 }
 
-void QtFigure::RenderFigure(Figure* fig)
+void QtFigure::Draw()
 {
 	setWindowTitle(QString::fromStdString(Title()));
-}
 
-void QtFigure::RenderXY_Plot(Figure* fig, dvis::XY_Plot* xy_plot)
-{
 	if(ui.m_plot->graphCount() < 1)
 		ui.m_plot->addGraph();
 
-	ui.m_plot->setWindowTitle(QString::fromStdString(fig->Title()));
+	ui.m_plot->setWindowTitle(QString::fromStdString(this->Title()));
 
 	if(!m_title)
 	{
-		m_title = new QCPTextElement(ui.m_plot, QString::fromStdString(fig->Title()), QFont("sans", 12, QFont::Bold));
+		m_title = new QCPTextElement(ui.m_plot, QString::fromStdString(this->Title()), QFont("sans", 12, QFont::Bold));
 		// add title layout element:
 		ui.m_plot->plotLayout()->insertRow(0);
 		ui.m_plot->plotLayout()->addElement(0, 0, m_title);
 	}
 	ui.m_plot->plotLayout()->addElement(0, 0, m_title);
 
-	ui.m_plot->graph(0)->setData
+
+
+	ui.m_plot->replot();
+}
+
+void QtXY_Plot::Draw(QCustomPlot* uiplot)
+{
+	uiplot->graph(0)->setData
 	(
-		QVector<qreal>::fromStdVector(xy_plot->m_x),
-		QVector<qreal>::fromStdVector(xy_plot->m_y)
+		QVector<qreal>::fromStdVector(m_x),
+		QVector<qreal>::fromStdVector(m_y)
 	);
-	ui.m_plot->xAxis->setLabel(QString::fromStdString(xy_plot->m_x_axis_bottom->m_label));
-	ui.m_plot->yAxis->setLabel(QString::fromStdString(xy_plot->m_y_axis_left->m_label));
+	uiplot->xAxis->setLabel(QString::fromStdString(m_x_axis_bottom->m_label));
+	uiplot->yAxis->setLabel(QString::fromStdString(m_y_axis_left->m_label));
 
 	// Set ranges if specified, else auto scale:
 	if(false)
 	{
 		// Fixed axis range
-		ui.m_plot->xAxis->setRange(xy_plot->m_x_axis_bottom->m_min, xy_plot->m_x_axis_bottom->m_max);
-		ui.m_plot->yAxis->setRange(xy_plot->m_y_axis_left->m_min, xy_plot->m_y_axis_left->m_max);
+		uiplot->xAxis->setRange(m_x_axis_bottom->m_min, m_x_axis_bottom->m_max);
+		uiplot->yAxis->setRange(m_y_axis_left->m_min, m_y_axis_left->m_max);
 	}
 	else
 	{
-		ui.m_plot->rescaleAxes();
+		uiplot->rescaleAxes();
 	}
-
-	ui.m_plot->replot();
 }
